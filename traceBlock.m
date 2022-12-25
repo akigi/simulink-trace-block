@@ -31,7 +31,16 @@ end
 children = [];
 traced_inports = [];
 
-if blk_blocktype_isinport && ~blk_sys_isroot
+if blk_blocktype_isinport && blk_sys_isroot
+    % 接続元ブロックが最上位階層に存在しているInportブロックである場合の処理
+    % 別のモデルを参照する
+    r_1 = struct('name', '', 'children', []);
+    r_1.name = blk_name;
+    disp(['接続元:' blk_fullname]);
+
+    
+
+elseif blk_blocktype_isinport && ~blk_sys_isroot
     % 接続元ブロックがサブシステムの中に存在しているInportブロックである場合の処理
     r_1 = struct('name', '', 'children', []);
     r_1.name = blk_name;
