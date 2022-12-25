@@ -1,5 +1,5 @@
-function children = traceBlock3(sys, blk, parent)
-disp('--traceBlock3--')
+function children = traceBlock(sys, blk, parent)
+disp('--traceBlock--')
 
 % sys = gcs
 % blk = gcb
@@ -49,14 +49,14 @@ for i=1:blk_inportnum
         srcblock_subsystem_sys = getfullname(srcblock_subsystem_h);
         srcblock_subsystem_outports = find_system(srcblock_subsystem_h, 'SearchDepth', 1, 'BlockType', 'Outport');
         srcblock_subsystem_outport = srcblock_subsystem_outports{srcblock_portnumber};
-        r_1_children = traceBlock3(srcblock_subsystem_sys, srcblock_subsystem_outport, r_1);
+        r_1_children = traceBlock(srcblock_subsystem_sys, srcblock_subsystem_outport, r_1);
     elseif srcblk_blocktype_isinport && ~srcblk_sys_isroot
         % 接続元ブロックがサブシステムの中に存在しているInportブロックである場合の処理
         [srcblock_subsystem_outside_srcblock, srcblock_subsystem_outside_portnumber] = getSubsystemOutsideSrcBlock(srcblk);
         srcblock_subsystem_outside_srcblock_sys = get_param(srcblock_subsystem_outside_srcblock, 'Parent');
-        r_1_children = traceBlock3(srcblock_subsystem_outside_srcblock_sys, srcblock_subsystem_outside_srcblock, r_1);
+        r_1_children = traceBlock(srcblock_subsystem_outside_srcblock_sys, srcblock_subsystem_outside_srcblock, r_1);
     else
-        r_1_children = traceBlock3(srcblk_sys, srcblk_h, r_1);
+        r_1_children = traceBlock(srcblk_sys, srcblk_h, r_1);
     end
     r_1.children = r_1_children;
     
