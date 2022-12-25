@@ -9,7 +9,10 @@ function [srcBlockHandle, srcPortNumber] = getSrcBlock(target_block, target_inpo
 % get line handles
 lines = get_param(target_block, 'LineHandles');
 if length(lines.Inport) < target_inport_number
-    disp('Error: target_inport_number is over number of target_block''s inports.')
+    fprintf('Error: Inport %d is not a number of inport ''%s''.\n', ...
+                    target_inport_number, ...
+                    getfullname(target_block) ...
+    )
 end
 line = lines.Inport(target_inport_number);
 
