@@ -7,7 +7,7 @@ function [srcBlockHandle, srcPortNumber] = getSrcBlock(target_block, target_inpo
 
 % get line handles
 lines = get_param(target_block, 'LineHandles');
-if len(lines.Inport) < target_port_number
+if length(lines.Inport) < target_inport_number
     disp('Error: target_inport_number is over number of target_block''s inports.')
 end
 line = lines.Inport(target_inport_number);

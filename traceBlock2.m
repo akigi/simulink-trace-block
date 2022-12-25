@@ -9,10 +9,10 @@ blk_h = get_param(blk, 'Handle');
 disp(['対象:' blk_name]);
 
 % ハイライト
-%hilite_system(blk_h);
+hilite_system(blk_h);
 
 % open system if not opened
-if ~bdIsLoaded(sys)
+if ~bdIsLoaded(bdroot(sys))
     sys_h = load_system(sys);
     sys_name = get_param(sys_h, "Name");
     disp([sys_name 'was loaded.']);
@@ -49,9 +49,11 @@ for i=1:length(pc)
     
     if srcblk_blocktype_issubsystem
         % subsystem
-        % get line
-        lines = get_param(blk, 'LineHandles')
-        line = lines.Inport(i);
+        [srcblock_subsystem_h, srcblock_portnumber] = getSrcBlock(blk, i);
+        srcblock_subsystem_sys = getfullname(srcblock_subsystem_h)
+        srcblock_subsystem_outports = find_system(srcblock_subsystem_h, 'SearchDepth', 1, 'BlockType', 'Outport');
+        srcblock_subsystem_outport = srcblock_subsystem_outports{srcblock_portnumber}
+        r_1_children = traceBlock2(srcblock_subsystem_sys, srcblock_subsystem_outport, r_1);
     else
         r_1_children = traceBlock2(srcblk_sys, srcblk_h, r_1);
     end
