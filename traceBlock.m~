@@ -8,6 +8,14 @@ blk_name = get_param(blk, 'Name');
 blk_fullname = getfullname(blk);
 blk_h = get_param(blk, 'Handle');
 blk_inportnum = getBlockInportNumber(blk);
+blk_sys = get_param(blk, 'Parent');
+blk_sys_isroot = ~contains(string(blk_sys), "/");
+blk_blocktype = get_param(blk, 'BlockType');
+blk_blocktype_isinport = strcmp(blk_blocktype, 'Inport');
+blk_blocktype_issubsystem = strcmp(blk_blocktype, 'SubSystem');
+    
+
+
 disp(['対象:' blk_fullname]);
 
 % ハイライト
@@ -53,11 +61,13 @@ for i=1:blk_inportnum
     elseif srcblk_blocktype_isinport && ~srcblk_sys_isroot
         % 接続元ブロックがサブシステムの中に存在しているInportブロックである場合の処理
         [srcblock_subsystem_outside_srcblock, srcblock_subsystem_outside_portnumber] = getSubsystemOutsideSrcBlock(srcblk);
-        if srcblock_subsystem_outside_srcblock != -1
+        if srcblock_subsystem_outside_srcblock ~= -1
             srcblock_subsystem_outside_srcblock_sys = get_param(srcblock_subsystem_outside_srcblock, 'Parent');
             r_1_children = traceBlock(srcblock_subsystem_outside_srcblock_sys, srcblock_subsystem_outside_srcblock, r_1);
         else
-end
+            disp('繋がってないです')
+            r_1_children = [];
+        end
     else
         r_1_children = traceBlock(srcblk_sys, srcblk_h, r_1);
     end
