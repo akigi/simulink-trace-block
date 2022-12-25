@@ -53,8 +53,12 @@ for i=1:blk_inportnum
     elseif srcblk_blocktype_isinport && ~srcblk_sys_isroot
         % 接続元ブロックがサブシステムの中に存在しているInportブロックである場合の処理
         [srcblock_subsystem_outside_srcblock, srcblock_subsystem_outside_portnumber] = getSubsystemOutsideSrcBlock(srcblk);
-        srcblock_subsystem_outside_srcblock_sys = get_param(srcblock_subsystem_outside_srcblock, 'Parent');
-        r_1_children = traceBlock(srcblock_subsystem_outside_srcblock_sys, srcblock_subsystem_outside_srcblock, r_1);
+        if srcblock_subsystem_outside_srcblock ~= -1
+            srcblock_subsystem_outside_srcblock_sys = get_param(srcblock_subsystem_outside_srcblock, 'Parent');
+            r_1_children = traceBlock(srcblock_subsystem_outside_srcblock_sys, srcblock_subsystem_outside_srcblock, r_1);
+        else
+            r_1_children = [];
+        end
     else
         r_1_children = traceBlock(srcblk_sys, srcblk_h, r_1);
     end
